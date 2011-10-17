@@ -3,15 +3,41 @@
 
 #include <jni.h>
 
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* jvm, void* reserved);
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved);
+
 namespace fr
 {
 namespace Planquart
 {
 namespace JNI
 {
+	/**
+	 * Manage the JVM reference and centralize static resources.
+	 *
+	 * You are free to add static fields in this class, such as string
+	 * references to be able to use them as simple key identifier in other
+	 * classes.
+	 * Initialize your resources on the heap in JVM::initialize() and delete
+	 * them in JVM::clean().
+	 */
 	class JVM
 	{
 	public:
+		/**
+		 * Method provided for user-defined initialization.
+		 * Put your initialization code in this method, which is
+		 * fired from JNI_OnLoad.
+		 */
+		static void initialize();
+
+		/**
+		 * Method provided for user-defined cleaning.
+		 * Put your cleaning code in this method, which is
+		 * fired from JNI_OnUnload.
+		 */
+		static void clean();
+
 		/**
 		 * Set the Java VM in use.
 		 * @param javaVM The Java Virtual Machine
@@ -36,6 +62,10 @@ namespace JNI
 		 */
 		static JNIEnv* getEnv()
 		{
+			if (JVM::jvm == 0)
+			{
+				return 0;
+			}
 			JNIEnv* env;
 			JVM::jvm->GetEnv((void**)&env, JVM::jni_version);
 			return env;
@@ -61,6 +91,11 @@ namespace JNI
 	private:
 		static JavaVM* jvm;
 		static jint jni_version;
+
+		/**
+		 * Prevent instantiation
+		 */
+		JVM() {}
 	};
 }
 }

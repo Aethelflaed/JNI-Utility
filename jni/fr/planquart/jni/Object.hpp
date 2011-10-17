@@ -13,11 +13,11 @@ namespace JNI
 	class Object
 	{
 	public:
-		Object(jobject object, Class& classObject);
-		Object(Class& classObject, ...);
+		Object(Class* classObject, jobject object);
+		Object(Class* classObject, Method* method, ...);
 		~Object();
 	private:
-		Class& classObject;
+		Class* classObject;
 		jobject object;
 	};
 }

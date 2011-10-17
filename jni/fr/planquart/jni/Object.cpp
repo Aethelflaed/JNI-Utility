@@ -1,9 +1,10 @@
 #include "Object.hpp"
+#include <cstdarg>
 
 using namespace fr::Planquart::JNI;
 
-Object::Object(jobject object, Class& classObject)
-	:object{object}, classObject{classObject}
+Object::Object(Class* classObject, jobject object);
+	:classObject{classObject}, object{object}
 {
 }
 
