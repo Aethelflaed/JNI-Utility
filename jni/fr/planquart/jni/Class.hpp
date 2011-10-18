@@ -4,6 +4,8 @@
 #include <jni.h>
 #include <map>
 
+#include "JVM.hpp"
+
 namespace fr
 {
 namespace Planquart
@@ -16,6 +18,8 @@ namespace JNI
 	class Class
 	{
 	public:
+		friend class JVM;
+
 		typedef std::map<const char*, Class*> classes_map;
 
 
@@ -61,13 +65,20 @@ namespace JNI
 		}
 
 		/**
+		 * Remove a class object a free up memory used by both the C++ heap
+		 * and the JNI.
+		 */
+		void remove();
+
+		/**
 		 * Get a local reference from the internal Java Class reference.
 		 * The methods check for living object before returning.
 		 *
 		 * Requires on local reference, returned.
 		 *
 		 * Note : If the method returns 0 it doesn't mean an exception will
-		 * be thrown.
+		 * be thrown. Consider removing the object in this case,
+		 * using remove method.
 		 *
 		 * @param env The JNI environment
 		 * @return A local ref to the Java Class object or 0
@@ -87,6 +98,11 @@ namespace JNI
 		}
 
 	private:
+		/**
+		 * Release all instances.
+		 */
+		static void releaseAll(JNIEnv* env);
+
 		/**
 		 * Initialize a new Class object representing no Java Class.
 		 */
@@ -114,6 +130,11 @@ namespace JNI
 		 * between threads without preventing it from being unloaded.
 		 */
 		jclass classObject;
+
+		/**
+		 * A copy of the class name.
+		 */
+		const char* className;
 
 		/**
 		 * A map between class name and Class objects.

@@ -1,4 +1,5 @@
 #include "JVM.hpp"
+#include "Class.hpp"
 
 using namespace fr::Planquart::JNI;
 
@@ -14,8 +15,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* jvm, void* reserved)
 
 JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved)
 {
-	JVM::setJVM(0);
 	JVM::clean();
+	JVM::setJVM(0);
 }
 
 void JVM::initialize()
@@ -25,6 +26,7 @@ void JVM::initialize()
 
 void JVM::clean()
 {
+	Class::releaseAll(getEnv());
 //#error JVM clean method not implemented
 }
 

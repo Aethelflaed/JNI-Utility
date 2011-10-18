@@ -28,6 +28,7 @@ Class* Class::getClass(const char* className, JNIEnv* env)
 }
 
 Class::Class(JNIEnv* env, const char* className)
+	:className{className}
 {
 	jclass classObject = env->FindClass(className);
 	if (classObject == 0)
@@ -41,6 +42,27 @@ Class::Class(JNIEnv* env, const char* className)
 
 Class::~Class()
 {
-	this->release(JVM::getEnv());
+	if (this->classObject != 0)
+	{
+		this->release(JVM::getEnv());
+	}
+}
+
+void Class::remove()
+{
+	Class::classes[this->className] = 0;
+
+	delete this;
+}
+
+void Class::releaseAll(JNIEnv* env)
+{
+	Class::classes_map::iterator it = Class::classes.begin();
+	if (it->second != 0)
+	{
+		it->second->release(env);
+		delete it->second;
+	}
+	Class::classes.erase(it);
 }
 
