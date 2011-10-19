@@ -6,6 +6,11 @@
 
 #include "JVM.hpp"
 
+#include "Field.hpp"
+#include "Method.hpp"
+#include "Name.hpp"
+#include "Signature.hpp"
+
 namespace fr
 {
 namespace Planquart
@@ -20,8 +25,9 @@ namespace JNI
 	public:
 		friend class JVM;
 
-		typedef std::map<const char*, Class*> classes_map;
-
+		typedef std::map<Name*, Class*> classes_map;
+		typedef std::map<Signature*, Field*> fields_map;
+		typedef std::map<Signature*, Method*> methods_map;
 
 		/**
 		 * Get the the address of the Class object corresponding to the
@@ -30,7 +36,7 @@ namespace JNI
 		 * @param className The name of the Java class
 		 * @return A Class object representing the Java class object or null
 		 */
-		static Class* getClass(const char* className);
+		static Class* getClass(Name* className);
 
 		/**
 		 * Get the address of the Class object corresponding to the Java
@@ -49,7 +55,7 @@ namespace JNI
 		 *	OutOfMemoryException if the class reference can't be
 		 *	loaded.
 		 */
-		static Class* getClass(const char* className, JNIEnv* env);
+		static Class* getClass(Name* className, JNIEnv* env);
 
 		/**
 		 * Release the internal Java Class reference
@@ -74,7 +80,7 @@ namespace JNI
 		 * Get a local reference from the internal Java Class reference.
 		 * The methods check for living object before returning.
 		 *
-		 * Requires on local reference, returned.
+		 * Requires one local reference, returned.
 		 *
 		 * Note : If the method returns 0 it doesn't mean an exception will
 		 * be thrown. Consider removing the object in this case,
@@ -99,6 +105,74 @@ namespace JNI
 
 	private:
 		/**
+		 * Get an Identifier to a static method of this class designed by
+		 * a Signature object.
+		 *
+		 * Note: If `create` param is false a 0 return just indicates that the
+		 * method Identifier is not registered and no exception is thrown.
+		 *
+		 * @param env The JNI environment
+		 * @param signature The method signature
+		 * @param create A boolean indicating whether the method Identifier
+		 *	should be created if it doesn't exists. Default to false.
+		 * @return A method opaque identifier or 0
+		 * @throws NoSuchMethodError, OutOfMemoryError,
+		 *	ExceptionInInitializerError
+		 */
+		Method* getStaticMethodID(JNIEnv* env, Signature* signature, bool create = false);
+
+		/**
+		 * Get an Identifier to a method of this class designed by
+		 * a Signature object.
+		 *
+		 * Note: If `create` param is false a 0 return just indicates that the
+		 * method Identifier is not registered and no exception is thrown.
+		 *
+		 * @param env The JNI environment
+		 * @param signature The method signature
+		 * @param create A boolean indicating whether the method Identifier
+		 *	should be created if it doesn't exists. Default to false.
+		 * @return A method opaque identifier or 0
+		 * @throws NoSuchMethodError, OutOfMemoryError,
+		 *	ExceptionInInitializerError
+		 */
+		Method* getMethodID(JNIEnv* env, Signature* signature, bool create = false);
+
+		/**
+		 * Get an Identifier to a static field of this class designed by
+		 * a Signature object.
+		 *
+		 * Note: If `create` param is false a 0 return just indicates that the
+		 * field Identifier is not registered and no exception is thrown.
+		 *
+		 * @param env The JNI environment
+		 * @param signature The field signature
+		 * @param create A boolean indicating whether the field Identifier
+		 *	should be created if it doesn't exists. Default to false.
+		 * @return A field opaque identifier or 0
+		 * @throws NoSuchMethodError, OutOfMemoryError,
+		 *	ExceptionInInitializerError
+		 */
+		Field* getStaticFieldID(JNIEnv* env, Signature* signature, bool create = false);
+
+		/**
+		 * Get an Identifier to a field of this class designed by
+		 * a Signature object.
+		 *
+		 * Note: If `create` param is false a 0 return just indicates that the
+		 * field Identifier is not registered and no exception is thrown.
+		 *
+		 * @param env The JNI environment
+		 * @param signature The field signature
+		 * @param create A boolean indicating whether the field Identifier
+		 *	should be created if it doesn't exists. Default to false.
+		 * @return A field opque Identifier or 0
+		 * @throws NoSuchMethodError, OutOfMemoryError,
+		 *	ExceptionInInitializerError
+		 */
+		Field* getFieldID(JNIEnv* env, Signature* signature, bool create = false);
+
+		/**
 		 * Release all instances.
 		 */
 		static void releaseAll(JNIEnv* env);
@@ -120,7 +194,7 @@ namespace JNI
 		 *	OutOfMemoryException if the class reference can't be
 		 *	loaded.
 		 */
-		Class(JNIEnv* env, const char* className);
+		Class(JNIEnv* env, Name* className);
 
 		~Class();
 
@@ -134,7 +208,7 @@ namespace JNI
 		/**
 		 * A copy of the class name.
 		 */
-		const char* className;
+		Name* className;
 
 		/**
 		 * A map between class name and Class objects.
@@ -144,6 +218,42 @@ namespace JNI
 		 * Initialization may be done in JVM::initialize()
 		 */
 		static classes_map classes;
+
+		/**
+		 * A map caching all static fields of the class.
+		 * This mapping uses the field name address as key, which involves
+		 * creating the strings on the heap and in a static way.
+		 *
+		 * Initialization may be done in JVM::initialize()
+		 */
+		fields_map static_fields;
+
+		/**
+		 * A map caching all fields of the class.
+		 * This mapping uses the field name address as key, which involves
+		 * creating the strings on the heap and in a static way.
+		 *
+		 * Initialization may be done in JVM::initialize()
+		 */
+		fields_map fields;
+
+		/**
+		 * A map caching all static methods of the class.
+		 * This mapping uses the field name address as key, which involves
+		 * creating the strings on the heap and in a static way.
+		 *
+		 * Initialization may be done in JVM::initialize()
+		 */
+		methods_map static_methods;
+
+		/**
+		 * A map caching all methods of the class.
+		 * This mapping uses the field name address as key, which involves
+		 * creating the strings on the heap and in a static way.
+		 *
+		 * Initialization may be done in JVM::initialize()
+		 */
+		methods_map methods;
 	};
 }
 }

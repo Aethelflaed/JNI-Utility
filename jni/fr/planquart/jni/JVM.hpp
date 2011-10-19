@@ -3,6 +3,9 @@
 
 #include <jni.h>
 
+#include "Signature.hpp"
+#include "Name.hpp"
+
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* jvm, void* reserved);
 JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved);
 
@@ -24,6 +27,8 @@ namespace JNI
 	class JVM
 	{
 	public:
+		static Name* class_Class;
+		static Name* class_String;
 		/**
 		 * Method provided for user-defined initialization.
 		 * Put your initialization code in this method, which is

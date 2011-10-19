@@ -11,6 +11,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* jvm, void* reserved)
 {
 	JVM::setJVM(jvm);
 	JVM::initialize();
+
+	return JVM::getVersion();
 }
 
 JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved)
@@ -19,8 +21,13 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved)
 	JVM::setJVM(0);
 }
 
+Name* JVM::class_Class = new Name("java/lang/Class");
+Name* JVM::class_String = new Name("java/lang/String");
+
 void JVM::initialize()
 {
+	//JNIEnv* env = JVM::getEnv();
+
 //#error JVM initialize method not implemented
 }
 

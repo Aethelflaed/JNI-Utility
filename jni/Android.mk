@@ -7,6 +7,8 @@ LOCAL_SRC_FILES	:= fr_planquart_jni_JNIActivity.cpp
 
 LOCAL_SRC_FILES += fr/planquart/jni/JVM.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/Class.cpp
+LOCAL_SRC_FILES += fr/planquart/jni/Field.cpp
+LOCAL_SRC_FILES += fr/planquart/jni/Method.cpp
 
 include $(BUILD_SHARED_LIBRARY)
 

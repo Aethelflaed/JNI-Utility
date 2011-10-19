@@ -1,21 +1,21 @@
-#include "Method.hpp"
+#include "Field.hpp"
 #include "Class.hpp"
 
 using namespace fr::Planquart::JNI;
 
-Method::Method(JNIEnv* env, Class* classObject, Signature* signature, bool isStatic)
+Field::Field(JNIEnv* env, Class* classObject, Signature* signature, bool isStatic)
 	:classObject{classObject}, signature{signature}, _static{isStatic}
 {
 	if (_static)
 	{
-		this->methodID = env->GetStaticMethodID(
+		this->fieldID = env->GetStaticFieldID(
 				this->classObject->getClassObject(env),
 				this->signature->getName(),
 				this->signature->getType());
 	}
 	else
 	{
-		this->methodID = env->GetMethodID(
+		this->fieldID = env->GetFieldID(
 				this->classObject->getClassObject(env),
 				this->signature->getName(),
 				this->signature->getType());

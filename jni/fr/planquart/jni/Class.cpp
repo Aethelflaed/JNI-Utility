@@ -5,7 +5,7 @@ using namespace fr::Planquart::JNI;
 
 Class::classes_map Class::classes{};
 
-Class* Class::getClass(const char* className)
+Class* Class::getClass(Name* className)
 {
 	Class::classes_map::iterator it = Class::classes.find(className);
 	if (it == Class::classes.end())
@@ -15,22 +15,21 @@ Class* Class::getClass(const char* className)
 	return it->second;
 }
 
-Class* Class::getClass(const char* className, JNIEnv* env)
+Class* Class::getClass(Name* className, JNIEnv* env)
 {
 	Class* classObject = Class::classes[className];
 	if (classObject == 0)
 	{
 		classObject = new Class{env, className};
 		Class::classes[className] = classObject;
-		return classObject;
 	}
 	return classObject;
 }
 
-Class::Class(JNIEnv* env, const char* className)
-	:className{className}
+Class::Class(JNIEnv* env, Name* className)
+	:className{className}, static_fields{}, fields{}, static_methods{}, methods{}
 {
-	jclass classObject = env->FindClass(className);
+	jclass classObject = env->FindClass(className->getName());
 	if (classObject == 0)
 	{
 		/* ClassNotFoundException or OutOfMemoryException */
@@ -64,5 +63,49 @@ void Class::releaseAll(JNIEnv* env)
 		delete it->second;
 	}
 	Class::classes.erase(it);
+}
+
+Method* Class::getStaticMethodID(JNIEnv* env, Signature* signature, bool create)
+{
+	Method* method = this->static_methods[signature];
+	if (method == 0 && create == true)
+	{
+		method = new Method(env, this, signature, true);
+		this->static_methods[signature] = method;
+	}
+	return method;
+}
+
+Method* Class::getMethodID(JNIEnv* env, Signature* signature, bool create)
+{
+	Method* method = this->methods[signature];
+	if (method == 0 && create == true)
+	{
+		method = new Method(env, this, signature);
+		this->methods[signature] = method;
+	}
+	return method;
+}
+
+Field* Class::getStaticFieldID(JNIEnv* env, Signature* signature, bool create)
+{
+	Field* field = this->static_fields[signature];
+	if (field == 0 && create == true)
+	{
+		field = new Field(env, this, signature, true);
+		this->static_fields[signature] = field;
+	}
+	return field;
+}
+
+Field* Class::getFieldID(JNIEnv* env, Signature* signature, bool create)
+{
+	Field* field = this->fields[signature];
+	if (field == 0 && create == true)
+	{
+		field = new Field(env, this, signature);
+		this->fields[signature] = field;
+	}
+	return field;
 }
 

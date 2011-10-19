@@ -9,6 +9,7 @@ public class JNIActivity extends Activity
 {
 	static
 	{
+		//System.loadLibrary("stlport_shared");
 		System.loadLibrary("fr_planquart_jni_JNIActivity");
 	}
 

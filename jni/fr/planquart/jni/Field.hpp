@@ -1,5 +1,5 @@
-#ifndef FR_PLANQUART_JNI_METHOD_HPP
-#define FR_PLANQUART_JNI_METHOD_HPP
+#ifndef FR_PLANQUART_JNI_FIELD_HPP
+#define FR_PLANQUART_JNI_FIELD_HPP
 
 #include <jni.h>
 
@@ -14,7 +14,7 @@ namespace JNI
 	class Class;
 	class Object;
 
-	class Method
+	class Field
 	{
 	public:
 		friend class Class;
@@ -26,16 +26,16 @@ namespace JNI
 		}
 
 	private:
-		Method(JNIEnv* env, Class* classObject, Signature* signature, bool isStatic = false);
+		Field(JNIEnv* env, Class* classObject, Signature* signature, bool isStatic = false);
 
 		Class* classObject;
 		Signature* signature;
-		jmethodID methodID;
+		jfieldID fieldID;
 		bool _static;
 	};
 }
 }
 }
 
-#endif /* FR_PLANQUART_JNI_METHOD_HPP */
+#endif /* FR_PLANQUART_JNI_FIELD_HPP */
 
