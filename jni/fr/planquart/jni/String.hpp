@@ -2,6 +2,9 @@
 #define FR_PLANQUART_JNI_STRING_HPP
 
 #include <jni.h>
+
+#include <string>
+
 #include "Object.hpp"
 #include "Class.hpp"
 
@@ -17,9 +20,25 @@ namespace JNI
 	class String : public Object
 	{
 	public:
-		friend class Class;
-
 		String(JNIEnv* env, Signature* signature, ...);
+
+		/**
+		 * Return a std::string corresponding to the Java String
+		 */
+		std::string getString(JNIEnv* env);
+
+		/**
+		 * Return a head-allocated C character array corresponding to the
+		 * Java String. The string is copied as an UTF8 string.
+		 *
+		 * Requires one local reference, freed.
+		 *
+		 * @param env The JNI environment
+		 * @return A manually allocated C string, which has to be freed.
+		 * @throws OutOfMemoryError
+		 */
+		char* getCUTFString(JNIEnv* env);
+
 	};
 }
 }

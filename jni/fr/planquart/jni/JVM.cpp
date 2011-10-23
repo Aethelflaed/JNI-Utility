@@ -1,8 +1,11 @@
 #include "JVM.hpp"
 #include "Class.hpp"
 #include "Object.hpp"
+#include "String.hpp"
 
 #include "android/Log.hpp"
+
+#include <cstdio>
 
 using namespace fr::Planquart::JNI;
 
@@ -38,11 +41,18 @@ void JVM::initialize()
 
 	android::Log::debug("JVM", "jclass value = %p", classObject->classObject);
 
-	Object stringObject = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
+	Object object = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
+
+	String* stringObject = static_cast<String*>(&object);
 
 	jint hash = classObject->callMethod<jint>(env, JVM::method_Object_hashCode_I);
 
+	char* string = stringObject->getCUTFString(env);
+
 	android::Log::debug("JVM", "jclass hash : %d", hash);
+	android::Log::debug("JVM", "jclass name : %s", string);
+
+	free(string);
 
 //#error JVM initialize method not implemented
 }

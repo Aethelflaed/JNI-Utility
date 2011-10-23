@@ -43,6 +43,7 @@ namespace JNI
 		 * @return A boolean indicating the basic validity of the object
 		 */
 		bool isValid();
+
 		/**
 		 * Check whether the current object is valid. It first check the simple
 		 * isValid version then check if the corresponding Java object is
