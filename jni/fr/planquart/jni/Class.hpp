@@ -10,6 +10,9 @@
 #include "Method.hpp"
 #include "Name.hpp"
 #include "Signature.hpp"
+#include "traits/Callable.hpp"
+#include "traits/StaticCallable.hpp"
+#include "traits/StaticFieldStructure.hpp"
 
 namespace fr
 {
@@ -17,10 +20,15 @@ namespace Planquart
 {
 namespace JNI
 {
+	class Object;
+
 	/**
 	 * This class is an abstract representation of a Java Class object.
 	 */
 	class Class
+		: public traits::StaticCallable,
+		  public traits::Callable,
+		  public traits::StaticFieldStructure
 	{
 	public:
 		friend class JVM;
@@ -67,6 +75,7 @@ namespace JNI
 			if (this->classObject != 0)
 			{
 				env->DeleteWeakGlobalRef(this->classObject);
+				this->classObject = 0;
 			}
 		}
 
@@ -95,7 +104,7 @@ namespace JNI
 			{
 				return 0;
 			}
-			if (env->IsSameObject(this->classObject, 0) == JNI_FALSE)
+			if (env->IsSameObject(this->classObject, 0) == JNI_TRUE)
 			{
 				this->release(env);
 				return 0;
@@ -103,75 +112,106 @@ namespace JNI
 			return static_cast<jclass>(env->NewLocalRef(this->classObject));
 		}
 
-	private:
 		/**
 		 * Get an Identifier to a static method of this class designed by
 		 * a Signature object.
 		 *
-		 * Note: If `create` param is false a 0 return just indicates that the
-		 * method Identifier is not registered and no exception is thrown.
+		 * Note: if `env` param is 0 and the method returns 0, is just
+		 * indicates that the method identifier is not registered and no
+		 * exception is thrown. If env is not null and the method returns 0
+		 * then a Java exception has been thrown.
 		 *
 		 * @param env The JNI environment
 		 * @param signature The method signature
-		 * @param create A boolean indicating whether the method Identifier
-		 *	should be created if it doesn't exists. Default to false.
 		 * @return A method opaque identifier or 0
 		 * @throws NoSuchMethodError, OutOfMemoryError,
 		 *	ExceptionInInitializerError
 		 */
-		Method* getStaticMethodID(JNIEnv* env, Signature* signature, bool create = false);
+		Method* getStaticMethod(JNIEnv* env, Signature* signature);
 
 		/**
 		 * Get an Identifier to a method of this class designed by
 		 * a Signature object.
 		 *
-		 * Note: If `create` param is false a 0 return just indicates that the
-		 * method Identifier is not registered and no exception is thrown.
+		 * Note: if `env` param is 0 and the method returns 0, is just
+		 * indicates that the method identifier is not registered and no
+		 * exception is thrown. If env is not null and the method returns 0
+		 * then a Java exception has been thrown.
 		 *
 		 * @param env The JNI environment
 		 * @param signature The method signature
-		 * @param create A boolean indicating whether the method Identifier
-		 *	should be created if it doesn't exists. Default to false.
 		 * @return A method opaque identifier or 0
 		 * @throws NoSuchMethodError, OutOfMemoryError,
 		 *	ExceptionInInitializerError
 		 */
-		Method* getMethodID(JNIEnv* env, Signature* signature, bool create = false);
+		Method* getMethod(JNIEnv* env, Signature* signature);
 
 		/**
 		 * Get an Identifier to a static field of this class designed by
 		 * a Signature object.
 		 *
-		 * Note: If `create` param is false a 0 return just indicates that the
-		 * field Identifier is not registered and no exception is thrown.
+		 * Note: if `env` param is 0 and the method returns 0, is just
+		 * indicates that the field identifier is not registered and no
+		 * exception is thrown. If env is not null and the method returns 0
+		 * then a Java exception has been thrown.
 		 *
 		 * @param env The JNI environment
 		 * @param signature The field signature
-		 * @param create A boolean indicating whether the field Identifier
-		 *	should be created if it doesn't exists. Default to false.
 		 * @return A field opaque identifier or 0
 		 * @throws NoSuchMethodError, OutOfMemoryError,
 		 *	ExceptionInInitializerError
 		 */
-		Field* getStaticFieldID(JNIEnv* env, Signature* signature, bool create = false);
+		Field* getStaticField(JNIEnv* env, Signature* signature);
 
 		/**
 		 * Get an Identifier to a field of this class designed by
 		 * a Signature object.
 		 *
-		 * Note: If `create` param is false a 0 return just indicates that the
-		 * field Identifier is not registered and no exception is thrown.
+		 * Note: if `env` param is 0 and the method returns 0, is just
+		 * indicates that the field identifier is not registered and no
+		 * exception is thrown. If env is not null and the method returns 0
+		 * then a Java exception has been thrown.
 		 *
 		 * @param env The JNI environment
 		 * @param signature The field signature
-		 * @param create A boolean indicating whether the field Identifier
-		 *	should be created if it doesn't exists. Default to false.
 		 * @return A field opque Identifier or 0
 		 * @throws NoSuchMethodError, OutOfMemoryError,
 		 *	ExceptionInInitializerError
 		 */
-		Field* getFieldID(JNIEnv* env, Signature* signature, bool create = false);
+		Field* getField(JNIEnv* env, Signature* signature);
 
+	protected:
+		virtual Method* getMethodDescriptor(JNIEnv* env, Signature* signature)
+		{
+			return this->getMethod(env, signature);
+		}
+
+		virtual Method* getStaticMethodDescriptor(JNIEnv* env, Signature* signature)
+		{
+			return this->getStaticMethod(env, signature);
+		}
+
+		virtual Field* getStaticFieldDescriptor(JNIEnv* env, Signature* signature)
+		{
+			return this->getStaticField(env, signature);
+		}
+
+		virtual jobject getJavaObject()
+		{
+			return this->classObject;
+		}
+
+		virtual jclass getJavaClass()
+		{
+			return this->classObject;
+		}
+
+		virtual Class* getClass()
+		{
+			return this;
+		}
+
+	private:
 		/**
 		 * Release all instances.
 		 */

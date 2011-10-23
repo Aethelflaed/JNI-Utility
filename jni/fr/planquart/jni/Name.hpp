@@ -9,6 +9,13 @@ namespace Planquart
 {
 namespace JNI
 {
+	/**
+	 * This class is designed to store a Java Class Name.
+	 *
+	 * This software intend to use this structure as statically and
+	 * heap-instanciated objects. It should be used to represent the
+	 * corresponding Java class.
+	 */
 	struct Name
 	{
 		Name(const char* name)

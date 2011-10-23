@@ -4,21 +4,26 @@
 using namespace fr::Planquart::JNI;
 
 Method::Method(JNIEnv* env, Class* classObject, Signature* signature, bool isStatic)
-	:classObject{classObject}, signature{signature}, _static{isStatic}
+	:methodID{0}
 {
-	if (_static)
+	jclass clazz = classObject->getClassObject(env);
+	if (clazz == 0)
+	{
+		return;
+	}
+	if (isStatic)
 	{
 		this->methodID = env->GetStaticMethodID(
-				this->classObject->getClassObject(env),
-				this->signature->getName(),
-				this->signature->getType());
+				clazz,
+				signature->getName(),
+				signature->getType());
 	}
 	else
 	{
 		this->methodID = env->GetMethodID(
-				this->classObject->getClassObject(env),
-				this->signature->getName(),
-				this->signature->getType());
+				clazz,
+				signature->getName(),
+				signature->getType());
 	}
 }
 

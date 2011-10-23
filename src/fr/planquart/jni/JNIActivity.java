@@ -23,10 +23,7 @@ public class JNIActivity extends Activity
 		TextView textView = (TextView)this.findViewById(R.id.textView);
 		textView.setText(this.getJNIText() + " " + this.JNIAdd(3, 4) + ". Windows size : " + this.getWindowSize());
 	}
-	/**
-	 * 
-	 * @return
-	 */
+	
 	native private Point getWindowSize();
 	
 	

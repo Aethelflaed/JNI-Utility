@@ -9,6 +9,14 @@ namespace Planquart
 {
 namespace JNI
 {
+	/**
+	 * This struct is designed to store a Java Signature, corresponding to
+	 * either a method or a field.
+	 *
+	 * This software intend to use this structure as statically and
+	 * heap-instanciated objects. It should be used to represent the
+	 * corresponding Java field or method.
+	 */
 	struct Signature
 	{
 		Signature(const char* name, const char* type)

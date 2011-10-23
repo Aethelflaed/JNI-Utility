@@ -29,6 +29,11 @@ namespace JNI
 	public:
 		static Name* class_Class;
 		static Name* class_String;
+
+		static Signature* method_Class_getName_V;
+		static Signature* method_Object_getClass_V;
+		static Signature* method_Object_toString_V;
+
 		/**
 		 * Method provided for user-defined initialization.
 		 * Put your initialization code in this method, which is
