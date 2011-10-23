@@ -1,4 +1,8 @@
 bin/*
 libs/*
 gen/*
+.classpath
+.project
+.proguard.cfg
+project.properties
 
