@@ -183,7 +183,7 @@ namespace JNI
 	protected:
 		virtual Method* getMethodDescriptor(JNIEnv* env, Signature* signature)
 		{
-			return this->getMethod(env, signature);
+			return Class::getClass(JVM::class_Class, env)->getMethod(env, signature);
 		}
 
 		virtual Method* getStaticMethodDescriptor(JNIEnv* env, Signature* signature)
@@ -196,14 +196,14 @@ namespace JNI
 			return this->getStaticField(env, signature);
 		}
 
-		virtual jobject getJavaObject()
+		virtual jobject getJavaObject(JNIEnv* env)
 		{
-			return this->classObject;
+			return this->getClassObject(env);
 		}
 
-		virtual jclass getJavaClass()
+		virtual jclass getJavaClass(JNIEnv* env)
 		{
-			return this->classObject;
+			return this->getClassObject(env);
 		}
 
 		virtual Class* getClass()

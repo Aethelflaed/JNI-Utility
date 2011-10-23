@@ -26,7 +26,6 @@ public class JNIActivity extends Activity
 	
 	native private Point getWindowSize();
 	
-	
 	native private String getJNIText();
 	
 	native private int JNIAdd(int a, int b);

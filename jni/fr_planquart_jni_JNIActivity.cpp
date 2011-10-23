@@ -31,6 +31,7 @@ JNIEXPORT jobject JNICALL Java_fr_planquart_jni_JNIActivity_getWindowSize
 	{
 		return 0;
 	}
+
 	jclass WindowManager = env->FindClass("android/view/WindowManager");
 	if (WindowManager == 0)
 	{

@@ -12,13 +12,22 @@ inline ::fr::Planquart::JNI::Object StaticCallable::callStaticObjectMethodV(JNIE
 	Method* method = this->getStaticMethodDescriptor(env, signature);
 	if (method != 0)
 	{
-		jobject value = env->CallStaticObjectMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jobject value;
+		if (object != 0)
+		{
+			value = env->CallStaticObjectMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return Object();
+		}
+		env->DeleteLocalRef(object);
 
 		return Object(this->getClass(), value);
 	}
 	return Object();
 }
-
 
 template <>
 void StaticCallable::callStaticMethod<void>(JNIEnv* env, Signature* signature, ...)
@@ -28,7 +37,9 @@ void StaticCallable::callStaticMethod<void>(JNIEnv* env, Signature* signature, .
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		env->CallStaticVoidMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		env->CallStaticVoidMethodV(object, method->getMethodID(), arguments_list);
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 	}
 }
@@ -41,7 +52,17 @@ jboolean StaticCallable::callStaticMethod<jboolean>(JNIEnv* env, Signature* sign
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jboolean value = env->CallStaticBooleanMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jboolean value;
+		if (object != 0)
+		{
+			value = env->CallStaticBooleanMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -56,7 +77,17 @@ jbyte StaticCallable::callStaticMethod<jbyte>(JNIEnv* env, Signature* signature,
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jbyte value = env->CallStaticByteMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jbyte value;
+		if (object != 0)
+		{
+			value = env->CallStaticByteMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -71,7 +102,17 @@ jchar StaticCallable::callStaticMethod<jchar>(JNIEnv* env, Signature* signature,
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jchar value = env->CallStaticCharMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jchar value;
+		if (object != 0)
+		{
+			value = env->CallStaticCharMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -86,7 +127,17 @@ jshort StaticCallable::callStaticMethod<jshort>(JNIEnv* env, Signature* signatur
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jshort value = env->CallStaticShortMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jshort value;
+		if (object != 0)
+		{
+			value = env->CallStaticShortMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -101,7 +152,17 @@ jint StaticCallable::callStaticMethod<jint>(JNIEnv* env, Signature* signature, .
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jint value = env->CallStaticIntMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jint value;
+		if (object != 0)
+		{
+			value = env->CallStaticIntMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -116,7 +177,17 @@ jlong StaticCallable::callStaticMethod<jlong>(JNIEnv* env, Signature* signature,
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jlong value = env->CallStaticLongMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jlong value;
+		if (object != 0)
+		{
+			value = env->CallStaticLongMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -131,7 +202,17 @@ jfloat StaticCallable::callStaticMethod<jfloat>(JNIEnv* env, Signature* signatur
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jfloat value = env->CallStaticFloatMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jfloat value;
+		if (object != 0)
+		{
+			value = env->CallStaticFloatMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -146,7 +227,17 @@ jdouble StaticCallable::callStaticMethod<jdouble>(JNIEnv* env, Signature* signat
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jdouble value = env->CallStaticDoubleMethodV(this->getJavaClass(), method->getMethodID(), arguments_list);
+		jclass object = this->getJavaClass(env);
+		jdouble value;
+		if (object != 0)
+		{
+			value = env->CallStaticDoubleMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -158,7 +249,8 @@ template <>
 {
 	va_list arguments_list;
 	va_start(arguments_list, signature);
-	return this->callStaticObjectMethodV(env, signature, arguments_list);
+	Object object = this->callStaticObjectMethodV(env, signature, arguments_list);
 	va_end(arguments_list);
+	return object;
 }
 

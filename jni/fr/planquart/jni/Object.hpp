@@ -77,9 +77,9 @@ namespace JNI
 		 */
 		Object();
 
-		virtual jobject getJavaObject()
+		virtual jobject getJavaObject(JNIEnv* env)
 		{
-			return this->object;
+			return env->NewLocalRef(this->object);
 		}
 	protected:
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature)

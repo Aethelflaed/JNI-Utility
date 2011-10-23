@@ -80,7 +80,7 @@ namespace traits
 
 	protected:
 		virtual Method* getStaticMethodDescriptor(JNIEnv* env, Signature* signature) = 0;
-		virtual jclass getJavaClass() = 0;
+		virtual jclass getJavaClass(JNIEnv* env) = 0;
 		virtual Class* getClass() = 0;
 
 		inline Object callStaticObjectMethodV(JNIEnv* env, Signature* signature, va_list arguments_list);

@@ -31,8 +31,8 @@ namespace JNI
 		static Name* class_String;
 
 		static Signature* method_Class_getName_V;
-		static Signature* method_Object_getClass_V;
 		static Signature* method_Object_toString_V;
+		static Signature* method_Object_hashCode_I;
 
 		/**
 		 * Method provided for user-defined initialization.

@@ -12,13 +12,22 @@ inline ::fr::Planquart::JNI::Object Callable::callObjectMethodV(JNIEnv* env, Sig
 	Method* method = this->getMethodDescriptor(env, signature);
 	if (method != 0)
 	{
-		jobject value = env->CallObjectMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jobject value;
+		if (object != 0)
+		{
+			value = env->CallObjectMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return Object();
+		}
+		env->DeleteLocalRef(object);
 
 		return Object(this->getClass(), value);
 	}
 	return Object();
 }
-
 
 template <>
 void Callable::callMethod<void>(JNIEnv* env, Signature* signature, ...)
@@ -28,7 +37,9 @@ void Callable::callMethod<void>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		env->CallVoidMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		env->CallVoidMethodV(object, method->getMethodID(), arguments_list);
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 	}
 }
@@ -41,7 +52,17 @@ jboolean Callable::callMethod<jboolean>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jboolean value = env->CallBooleanMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jboolean value;
+		if (object != 0)
+		{
+			value = env->CallBooleanMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -56,7 +77,17 @@ jbyte Callable::callMethod<jbyte>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jbyte value = env->CallByteMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jbyte value;
+		if (object != 0)
+		{
+			value = env->CallByteMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -71,7 +102,17 @@ jchar Callable::callMethod<jchar>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jchar value = env->CallCharMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jchar value;
+		if (object != 0)
+		{
+			value = env->CallCharMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -86,7 +127,17 @@ jshort Callable::callMethod<jshort>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jshort value = env->CallShortMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jshort value;
+		if (object != 0)
+		{
+			value = env->CallShortMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -101,7 +152,17 @@ jint Callable::callMethod<jint>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jint value = env->CallIntMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jint value;
+		if (object != 0)
+		{
+			value = env->CallIntMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -116,7 +177,17 @@ jlong Callable::callMethod<jlong>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jlong value = env->CallLongMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jlong value;
+		if (object != 0)
+		{
+			value = env->CallLongMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -131,7 +202,17 @@ jfloat Callable::callMethod<jfloat>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jfloat value = env->CallFloatMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jfloat value;
+		if (object != 0)
+		{
+			value = env->CallFloatMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -146,7 +227,17 @@ jdouble Callable::callMethod<jdouble>(JNIEnv* env, Signature* signature, ...)
 	{
 		va_list arguments_list;
 		va_start(arguments_list, signature);
-		jdouble value = env->CallDoubleMethodV(this->getJavaObject(), method->getMethodID(), arguments_list);
+		jobject object = this->getJavaObject(env);
+		jdouble value;
+		if (object != 0)
+		{
+			value = env->CallDoubleMethodV(object, method->getMethodID(), arguments_list);
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		va_end(arguments_list);
 		return value;
 	}
@@ -158,7 +249,8 @@ template <>
 {
 	va_list arguments_list;
 	va_start(arguments_list, signature);
-	return this->callObjectMethodV(env, signature, arguments_list);
+	Object object = this->callObjectMethodV(env, signature, arguments_list);
 	va_end(arguments_list);
+	return object;
 }
 

@@ -12,7 +12,17 @@ inline ::fr::Planquart::JNI::Object FieldStructure::getObjectField(JNIEnv* env, 
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jobject value = env->GetObjectField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jobject value;
+		if (object != 0)
+		{
+			value = env->GetObjectField(object, field->getFieldID());
+		}
+		else
+		{
+			return Object();
+		}
+		env->DeleteLocalRef(object);
 		return Object(this->getClass(), value);
 	}
 	return Object();
@@ -23,211 +33,326 @@ inline bool FieldStructure::setObjectField(JNIEnv* env, Signature* signature, Ob
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetObjectField(this->getJavaObject(), field->getFieldID(), value.getJavaObject());
+		jobject object = this->getJavaObject(env);
+		if (object != 0)
+		{
+			jobject objectValue = value.getJavaObject(env);
+			if (objectValue != 0)
+			{
+				env->SetObjectField(object, field->getFieldID(), objectValue);
+			}
+			else
+			{
+				env->DeleteLocalRef(object);
+				return false;
+			}
+			env->DeleteLocalRef(objectValue);
+		}
+		else
+		{
+			return false;
+		}
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 jboolean FieldStructure::getField<jboolean>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jboolean value = env->GetBooleanField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jboolean value;
+		if (object != 0)
+		{
+			value = env->GetBooleanField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jbyte FieldStructure::getField<jbyte>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jbyte value = env->GetByteField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jbyte value;
+		if (object != 0)
+		{
+			value = env->GetByteField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jchar FieldStructure::getField<jchar>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jchar value = env->GetCharField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jchar value;
+		if (object != 0)
+		{
+			value = env->GetCharField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jshort FieldStructure::getField<jshort>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jshort value = env->GetShortField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jshort value;
+		if (object != 0)
+		{
+			value = env->GetShortField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jint FieldStructure::getField<jint>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jint value = env->GetIntField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jint value;
+		if (object != 0)
+		{
+			value = env->GetIntField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jlong FieldStructure::getField<jlong>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jlong value = env->GetLongField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jlong value;
+		if (object != 0)
+		{
+			value = env->GetLongField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jfloat FieldStructure::getField<jfloat>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jfloat value = env->GetFloatField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jfloat value;
+		if (object != 0)
+		{
+			value = env->GetFloatField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 jdouble FieldStructure::getField<jdouble>(JNIEnv* env, Signature* signature)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		jdouble value = env->GetDoubleField(this->getJavaObject(), field->getFieldID());
+		jobject object = this->getJavaObject(env);
+		jdouble value;
+		if (object != 0)
+		{
+			value = env->GetDoubleField(object, field->getFieldID());
+		}
+		else
+		{
+			return 0;
+		}
+		env->DeleteLocalRef(object);
 		return value;
 	}
 	return 0;
 }
 
-template <>
+	template <>
 ::fr::Planquart::JNI::Object FieldStructure::getField< ::fr::Planquart::JNI::Object >(JNIEnv* env, Signature* signature)
 {
 	return this->getObjectField(env, signature);
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jboolean>(JNIEnv* env, Signature* signature, jboolean& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetBooleanField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetBooleanField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jbyte>(JNIEnv* env, Signature* signature, jbyte& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetByteField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetByteField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jchar>(JNIEnv* env, Signature* signature, jchar& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetCharField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetCharField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jshort>(JNIEnv* env, Signature* signature, jshort& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetShortField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetShortField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jint>(JNIEnv* env, Signature* signature, jint& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetIntField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetIntField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jlong>(JNIEnv* env, Signature* signature, jlong& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetLongField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetLongField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jfloat>(JNIEnv* env, Signature* signature, jfloat& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetFloatField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetFloatField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField<jdouble>(JNIEnv* env, Signature* signature, jdouble& value)
 {
 	Field* field = this->getFieldDescriptor(env, signature);
 	if (field != 0)
 	{
-		env->SetDoubleField(this->getJavaObject(), field->getFieldID(), value);
+		jobject object = this->getJavaObject(env);
+		env->SetDoubleField(object, field->getFieldID(), value);
+		env->DeleteLocalRef(object);
 		return true;
 	}
 	return false;
 }
 
-template <>
+	template <>
 bool FieldStructure::setField< ::fr::Planquart::JNI::Object >(JNIEnv* env, Signature* signature, ::fr::Planquart::JNI::Object& value)
 {
 	return this->setObjectField(env, signature, value);

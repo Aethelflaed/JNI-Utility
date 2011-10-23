@@ -3,7 +3,6 @@
 #include "Object.hpp"
 
 #include "android/Log.hpp"
-#include <cstdio>
 
 using namespace fr::Planquart::JNI;
 
@@ -29,22 +28,21 @@ Name* JVM::class_Class = new Name("java/lang/Class");
 Name* JVM::class_String = new Name("java/lang/String");
 
 Signature* JVM::method_Class_getName_V = new Signature("getName", "()Ljava/lang/String;");
-Signature* JVM::method_Object_getClass_V = new Signature("getClass", "()Ljava/lang/Class;");
 Signature* JVM::method_Object_toString_V = new Signature("toString", "()Ljava/lang/String;");
+Signature* JVM::method_Object_hashCode_I = new Signature("hashCode", "()I");
 
 void JVM::initialize()
 {
 	JNIEnv* env = JVM::getEnv();
-	Class* classObject = Class::getClass(JVM::class_Class, env);
+	Class* classObject = Class::getClass(JVM::class_String, env);
 
-	char string[256];
-	sprintf(string, "jclass value = %d", classObject->classObject);
-	android::Log::debug("JVM", string);
 	android::Log::debug("JVM", "jclass value = %p", classObject->classObject);
 
-	Method* method = classObject->getMethod(env, method_Class_getName_V);
-
 	Object stringObject = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
+
+	jint hash = classObject->callMethod<jint>(env, JVM::method_Object_hashCode_I);
+
+	android::Log::debug("JVM", "jclass hash : %d", hash);
 
 //#error JVM initialize method not implemented
 }
