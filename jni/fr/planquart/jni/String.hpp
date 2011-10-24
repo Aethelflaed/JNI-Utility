@@ -23,9 +23,14 @@ namespace JNI
 		String(JNIEnv* env, Signature* signature, ...);
 
 		/**
-		 * Return a std::string corresponding to the Java String
+		 * Return a std::string corresponding to the Java String.
+		 * The strin is copied as an UTF8 string.
+		 *
+		 * @param env The JNI environment
+		 * @return A std::wstring
+		 * @throws OutOfMemoryError
 		 */
-		std::string getString(JNIEnv* env);
+		std::string getUTFString(JNIEnv* env);
 
 		/**
 		 * Return a head-allocated C character array corresponding to the

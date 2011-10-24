@@ -10,6 +10,15 @@ String::String(JNIEnv* env, Signature* signature, ...)
 {
 }
 
+std::string String::getUTFString(JNIEnv* env)
+{
+	char* c_string = this->getCUTFString(env);
+	std::string string(c_string);
+	free(c_string);
+
+	return string;
+}
+
 char* String::getCUTFString(JNIEnv* env)
 {
 	jstring javaString = static_cast<jstring>(this->getJavaObject(env));
