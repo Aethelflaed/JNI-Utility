@@ -35,7 +35,7 @@ Object::Object(JNIEnv* env, Name* className, Signature* signature, ...)
 			{
 				va_list arguments_list;
 				va_start(arguments_list, signature);
-				this->object = env->NewObjectV(clazz, method->methodID, arguments_list);
+				this->object = env->NewObjectV(clazz, method->getMethodID(), arguments_list);
 				va_end(arguments_list);
 			}
 		}

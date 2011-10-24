@@ -20,7 +20,22 @@ namespace JNI
 	class String : public Object
 	{
 	public:
+		/**
+		 * Same constructor as Object, see object
+		 */
 		String(JNIEnv* env, Signature* signature, ...);
+
+		/**
+		 * Create a Java String representation from a C string
+		 *
+		 * Requires 2 local reference, one freed and the other owned by
+		 * the object.
+		 *
+		 * @param env The JNI environment
+		 * @param string The C string
+		 * @throws OutOfMemoryError
+		 */
+		String(JNIEnv* env, const char* string);
 
 		/**
 		 * Return a std::string corresponding to the Java String.
@@ -44,6 +59,10 @@ namespace JNI
 		 */
 		char* getCUTFString(JNIEnv* env);
 
+		virtual jstring getJavaObject(JNIEnv* env)
+		{
+			return static_cast<jstring>(Object::getJavaObject(env));
+		}
 	};
 }
 }

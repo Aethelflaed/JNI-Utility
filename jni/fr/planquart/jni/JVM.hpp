@@ -43,6 +43,7 @@ namespace JNI
 		static Signature* method_Display_getHeight_V;
 		static Signature* method_Display_getWidth_V;
 		static Signature* ctor_Point_II;
+		static Signature* ctor_String__3B;
 
 		/**
 		 * Method provided for user-defined initialization.

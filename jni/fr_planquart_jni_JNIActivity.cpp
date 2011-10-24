@@ -3,13 +3,14 @@
 #include "fr/planquart/jni/JVM.hpp"
 #include "fr/planquart/jni/Class.hpp"
 #include "fr/planquart/jni/Object.hpp"
+#include "fr/planquart/jni/String.hpp"
 
 using namespace fr::Planquart::JNI;
 
 JNIEXPORT jstring JNICALL Java_fr_planquart_jni_JNIActivity_getJNIText
   (JNIEnv * env, jobject thiz)
 {
-	return env->NewStringUTF("Hello World!");
+	return String(env, "This is a string demo :) \n").getJavaObject(env);
 }
 
 JNIEXPORT jint JNICALL Java_fr_planquart_jni_JNIActivity_JNIAdd

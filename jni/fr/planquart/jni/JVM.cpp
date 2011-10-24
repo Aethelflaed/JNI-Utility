@@ -43,6 +43,7 @@ Signature* JVM::method_WindowManager_getDefaultDisplay_V = new Signature("getDef
 Signature* JVM::method_Display_getHeight_V = new Signature("getHeight", "()I");
 Signature* JVM::method_Display_getWidth_V = new Signature("getWidth", "()I");
 Signature* JVM::ctor_Point_II = new Signature("<init>", "(II)V");
+Signature* JVM::ctor_String__3B = new Signature("<init>", "([B)V");
 
 void JVM::initialize()
 {
