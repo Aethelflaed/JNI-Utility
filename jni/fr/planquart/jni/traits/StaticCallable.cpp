@@ -4,6 +4,7 @@
 #include "../Object.hpp"
 #include "../Signature.hpp"
 #include "../Class.hpp"
+#include "../JVM.hpp"
 
 using namespace fr::Planquart::JNI::traits;
 
@@ -24,7 +25,7 @@ inline ::fr::Planquart::JNI::Object StaticCallable::callStaticObjectMethodV(JNIE
 		}
 		env->DeleteLocalRef(object);
 
-		return Object(this->getClass(), value);
+		return Object(Class::getClass(JVM::class_Object, env), value);
 	}
 	return Object();
 }
