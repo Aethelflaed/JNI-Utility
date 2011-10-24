@@ -10,6 +10,7 @@ LOCAL_SRC_FILES	:= fr_planquart_jni_JNIActivity.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/JVM.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/Class.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/Object.cpp
+LOCAL_SRC_FILES += fr/planquart/jni/String.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/Field.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/Method.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/traits/Callable.cpp

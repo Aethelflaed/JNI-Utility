@@ -3,6 +3,6 @@ libs/*
 gen/*
 .classpath
 .project
-.proguard.cfg
+proguard.cfg
 project.properties
 
