@@ -3,7 +3,7 @@
 #include "Object.hpp"
 #include "String.hpp"
 
-#include "android/Log.hpp"
+#include "Log.hpp"
 
 #include <cstdio>
 
@@ -50,7 +50,7 @@ void JVM::initialize()
 	JNIEnv* env = JVM::getEnv();
 	Class* classObject = Class::getClass(JVM::class_String, env);
 
-	android::Log::debug("JVM", "jclass value = %p", classObject->classObject);
+	Log::debug("JVM", "jclass value = %p", classObject->classObject);
 
 	Object object = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
 
@@ -58,8 +58,8 @@ void JVM::initialize()
 
 	jint hash = classObject->callMethod<jint>(env, JVM::method_Object_hashCode_I);
 
-	android::Log::debug("JVM", "jclass hash : %d", hash);
-	android::Log::debug("JVM", "jclass name : %s", stringObject->getUTFString(env).c_str());
+	Log::debug("JVM", "jclass hash : %d", hash);
+	Log::debug("JVM", "jclass name : %s", stringObject->getUTFString(env).c_str());
 
 //#error JVM initialize method not implemented
 }
