@@ -3,6 +3,7 @@ libs/*
 gen/*
 .classpath
 .project
+.DS_Store
 proguard.cfg
 project.properties
 
