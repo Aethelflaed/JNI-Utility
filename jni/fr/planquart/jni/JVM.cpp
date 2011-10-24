@@ -28,6 +28,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved)
 }
 
 Name* JVM::class_Class = new Name("java/lang/Class");
+Name* JVM::class_Object = new Name("java/lang/Object");
 Name* JVM::class_String = new Name("java/lang/String");
 Name* JVM::class_Activity = new Name("android/app/Activity");
 Name* JVM::class_WindowManager = new Name("android/view/WindowManager");

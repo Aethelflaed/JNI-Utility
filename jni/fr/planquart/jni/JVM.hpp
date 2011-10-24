@@ -28,6 +28,7 @@ namespace JNI
 	{
 	public:
 		static Name* class_Class;
+		static Name* class_Object;
 		static Name* class_String;
 		static Name* class_Activity;
 		static Name* class_WindowManager;
