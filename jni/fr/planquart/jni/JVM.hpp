@@ -29,10 +29,19 @@ namespace JNI
 	public:
 		static Name* class_Class;
 		static Name* class_String;
+		static Name* class_Activity;
+		static Name* class_WindowManager;
+		static Name* class_Display;
+		static Name* class_Point;
 
 		static Signature* method_Class_getName_V;
 		static Signature* method_Object_toString_V;
 		static Signature* method_Object_hashCode_I;
+		static Signature* method_Activity_getWindowManager_V;
+		static Signature* method_WindowManager_getDefaultDisplay_V;
+		static Signature* method_Display_getHeight_V;
+		static Signature* method_Display_getWidth_V;
+		static Signature* ctor_Point_II;
 
 		/**
 		 * Method provided for user-defined initialization.

@@ -29,10 +29,19 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* jvm, void* reserved)
 
 Name* JVM::class_Class = new Name("java/lang/Class");
 Name* JVM::class_String = new Name("java/lang/String");
+Name* JVM::class_Activity = new Name("android/app/Activity");
+Name* JVM::class_WindowManager = new Name("android/view/WindowManager");
+Name* JVM::class_Display = new Name("android/view/Display");
+Name* JVM::class_Point = new Name("android/graphics/Point");
 
 Signature* JVM::method_Class_getName_V = new Signature("getName", "()Ljava/lang/String;");
 Signature* JVM::method_Object_toString_V = new Signature("toString", "()Ljava/lang/String;");
 Signature* JVM::method_Object_hashCode_I = new Signature("hashCode", "()I");
+Signature* JVM::method_Activity_getWindowManager_V = new Signature("getWindowManager", "()Landroid/view/WindowManager;");
+Signature* JVM::method_WindowManager_getDefaultDisplay_V = new Signature("getDefaultDisplay", "()Landroid/view/Display;");
+Signature* JVM::method_Display_getHeight_V = new Signature("getHeight", "()I");
+Signature* JVM::method_Display_getWidth_V = new Signature("getWidth", "()I");
+Signature* JVM::ctor_Point_II = new Signature("<init>", "(II)V");
 
 void JVM::initialize()
 {
@@ -47,12 +56,8 @@ void JVM::initialize()
 
 	jint hash = classObject->callMethod<jint>(env, JVM::method_Object_hashCode_I);
 
-	char* string = stringObject->getCUTFString(env);
-
 	android::Log::debug("JVM", "jclass hash : %d", hash);
-	android::Log::debug("JVM", "jclass name : %s", string);
-
-	free(string);
+	android::Log::debug("JVM", "jclass name : %s", stringObject->getUTFString(env).c_str());
 
 //#error JVM initialize method not implemented
 }
