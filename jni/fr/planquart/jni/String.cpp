@@ -33,7 +33,7 @@ String::String(JNIEnv* env, const char* string)
 				Method* method = this->classObject->getMethod(env, JVM::ctor_String__3B);
 				if (method != 0)
 				{
-					this->object = env->NewObject(clazz, method->getMethodID(), bytes);
+					this->setJavaObject(env->NewObject(clazz, method->getMethodID(), bytes));
 				}
 
 				env->DeleteLocalRef(bytes);

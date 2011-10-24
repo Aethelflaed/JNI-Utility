@@ -8,6 +8,7 @@
 #include "Signature.hpp"
 #include "traits/Callable.hpp"
 #include "traits/FieldStructure.hpp"
+#include "traits/JObjectWrapper.hpp"
 
 namespace fr
 {
@@ -18,7 +19,10 @@ namespace JNI
 	/**
 	 * This class is an abstract representation of a Java object.
 	 */
-	class Object : public traits::Callable, public traits::FieldStructure
+	class Object :
+		public traits::JObjectWrapper,
+		public traits::Callable,
+		public traits::FieldStructure
 	{
 	public:
 		/**
@@ -37,23 +41,12 @@ namespace JNI
 
 		/**
 		 * Check whether the current object is valid. It is only done by
-		 * checking if the object is not null.
+		 * checking if the object and the class are not null.
 		 * If the object is not valid you can't perform any operation on it.
 		 *
 		 * @return A boolean indicating the basic validity of the object
 		 */
-		bool isValid();
-
-		/**
-		 * Check whether the current object is valid. It first check the simple
-		 * isValid version then check if the corresponding Java object is
-		 * different from null.
-		 * If the object is not valid you can't perform any operation on it.
-		 *
-		 * @param env The JNI environment
-		 * @return A boolean indicating the validity of the object.
-		 */
-		bool isValid(JNIEnv* env);
+		virtual bool isValid();
 
 		/**
 		 * Copy constructor. Should be a move constructor for security reason.
@@ -67,10 +60,8 @@ namespace JNI
 		 *
 		 * @param classObject The abstract representation of the class
 		 * @param object The Java Object
-		 * @param isGlobal Indicates if the object is a weak global reference
-		 *	or a local reference.
 		 */
-		Object(Class* classObject, jobject object, bool isGlobal = false);
+		Object(Class* classObject, jobject object);
 
 		/**
 		 * Create a null object, used as return value by Class when there are
@@ -94,7 +85,11 @@ namespace JNI
 
 		virtual jobject getJavaObject(JNIEnv* env)
 		{
-			return env->NewLocalRef(this->object);
+			return traits::JObjectWrapper::getJavaObject(env);
+		}
+		virtual jobject getJavaObject(JNIEnv* env) const
+		{
+			return traits::JObjectWrapper::getJavaObject(env);
 		}
 	protected:
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature)
@@ -112,9 +107,7 @@ namespace JNI
 			return this->classObject;
 		}
 
-		bool isGlobal;
 		Class* classObject;
-		jobject object;
 	};
 }
 }

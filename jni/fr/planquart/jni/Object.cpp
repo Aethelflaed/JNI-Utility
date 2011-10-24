@@ -6,23 +6,23 @@
 using namespace fr::Planquart::JNI;
 
 Object::Object()
-	:isGlobal{false}, classObject{0}, object{0}
+	:classObject{0}
 {
 }
 
-Object::Object(Class* classObject, jobject object, bool isGlobal)
-	:isGlobal{isGlobal}, classObject{classObject}, object{object}
+Object::Object(Class* classObject, jobject object)
+	:classObject{classObject}
 {
+	this->setJavaObject(object);
 }
 
 Object::Object(const Object& object)
-	:isGlobal{object.isGlobal}, classObject{object.classObject}
+	:classObject{object.classObject}
 {
-	this->object = JVM::getEnv()->NewLocalRef(object.object);
+	this->setJavaObject(object.getJavaObject(JVM::getEnv()));
 }
 
 Object::Object(JNIEnv* env, Name* className, Signature* signature, ...)
-	:isGlobal{false}, classObject{0}, object{0}
 {
 	this->classObject = Class::getClass(className, env);
 	if (this->classObject != 0)
@@ -35,7 +35,7 @@ Object::Object(JNIEnv* env, Name* className, Signature* signature, ...)
 			{
 				va_list arguments_list;
 				va_start(arguments_list, signature);
-				this->object = env->NewObjectV(clazz, method->getMethodID(), arguments_list);
+				this->setJavaObject(env->NewObjectV(clazz, method->getMethodID(), arguments_list));
 				va_end(arguments_list);
 			}
 		}
@@ -48,41 +48,17 @@ Object::Object(JNIEnv* env, Name* className, Signature* signature, ...)
 
 Object::~Object()
 {
-	if (this->isValid())
+	if (this->isValid() == false)
 	{
 		return;
 	}
 
-	if (this->isGlobal)
-	{
-		JVM::getEnv()->DeleteWeakGlobalRef(this->object);
-	}
-	else
-	{
-		JVM::getEnv()->DeleteLocalRef(this->object);
-	}
+	JVM::getEnv()->DeleteLocalRef(traits::JObjectWrapper::getJavaObject());
 }
 
 bool Object::isValid()
 {
-	if (this->classObject == 0 ||
-		this->object == 0)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool Object::isValid(JNIEnv* env)
-{
-	if (this->isValid())
-	{
-		if (env->IsSameObject(this->object, 0) == JNI_FALSE)
-		{
-			return true;
-		}
-		return false;
-	}
-	return false;
+	return traits::JObjectWrapper::isValid() &&
+		this->classObject != 0;
 }
 
