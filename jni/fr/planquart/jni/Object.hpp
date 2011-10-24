@@ -78,6 +78,20 @@ namespace JNI
 		 */
 		Object();
 
+		/**
+		 * Cast this object to the specified java class.
+		 *
+		 * @param env The JNI environment
+		 * @param name The name of the Java Class
+		 * @return A reference to the object
+		 * @throws Any exception thrown by Class::getClass(Name*, JNIEnv*)
+		 */
+		Object& castToClass(JNIEnv* env, Name* name)
+		{
+			this->classObject = Class::getClass(name, env);
+			return *this;
+		}
+
 		virtual jobject getJavaObject(JNIEnv* env)
 		{
 			return env->NewLocalRef(this->object);
