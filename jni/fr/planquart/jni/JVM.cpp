@@ -50,7 +50,7 @@ void JVM::initialize()
 	JNIEnv* env = JVM::getEnv();
 	Class* classObject = Class::getClass(JVM::class_String, env);
 
-	Log::debug("JVM", "jclass value = %p", classObject->classObject);
+	Log::debug("JVM", "jclass value = %p", classObject->traits::JavaObjectWrapper::getJavaObject());
 
 	Object object = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
 

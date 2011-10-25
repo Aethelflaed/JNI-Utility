@@ -20,13 +20,13 @@ Class* Class::getClass(Name* className)
 
 Class* Class::getClass(Name* className, JNIEnv* env)
 {
-	Class* classObject = Class::classes[className];
-	if (classObject == 0)
+	Class* classInstance = Class::classes[className];
+	if (classInstance == 0)
 	{
-		classObject = new Class{env, className};
-		Class::classes[className] = classObject;
+		classInstance = new Class{env, className};
+		Class::classes[className] = classInstance;
 	}
-	return classObject;
+	return classInstance;
 }
 
 Class::Class(JNIEnv* env, Name* className)
@@ -38,13 +38,13 @@ Class::Class(JNIEnv* env, Name* className)
 		/* ClassNotFoundException or OutOfMemoryException */
 		return;
 	}
-	this->classObject = static_cast<jclass>(env->NewWeakGlobalRef(classObject));
+	this->setJavaObject(env->NewWeakGlobalRef(classObject));
 	env->DeleteLocalRef(classObject);
 }
 
 Class::~Class()
 {
-	if (this->classObject != 0)
+	if (traits::JavaObjectWrapper::getJavaObject() != 0)
 	{
 		this->release(JVM::getEnv());
 	}

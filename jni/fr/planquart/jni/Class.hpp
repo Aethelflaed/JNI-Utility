@@ -26,10 +26,11 @@ namespace JNI
 	/**
 	 * This class is an abstract representation of a Java Class object.
 	 */
-	class Class
-		: public traits::StaticCallable,
-		  public traits::Callable,
-		  public traits::StaticFieldStructure
+	class Class :
+		public traits::JavaObjectWrapper,
+		public traits::StaticCallable,
+		public traits::Callable,
+		public traits::StaticFieldStructure
 	{
 	public:
 		friend class JVM;
@@ -73,10 +74,11 @@ namespace JNI
 		 */
 		void release(JNIEnv* env)
 		{
-			if (this->classObject != 0)
+			jobject object = traits::JavaObjectWrapper::getJavaObject();
+			if (object != 0)
 			{
-				env->DeleteWeakGlobalRef(this->classObject);
-				this->classObject = 0;
+				env->DeleteWeakGlobalRef(object);
+				this->setJavaObject(0);
 			}
 		}
 
@@ -101,16 +103,12 @@ namespace JNI
 		 */
 		jclass getClassObject(JNIEnv* env)
 		{
-			if (this->classObject == 0)
-			{
-				return 0;
-			}
-			if (env->IsSameObject(this->classObject, 0) == JNI_TRUE)
+			jobject object = this->getJavaObject(env);
+			if (object == 0)
 			{
 				this->release(env);
-				return 0;
 			}
-			return static_cast<jclass>(env->NewLocalRef(this->classObject));
+			return static_cast<jclass>(object);
 		}
 
 		/**
@@ -244,7 +242,7 @@ namespace JNI
 		 * This object is a weak global reference to keep the same reference
 		 * between threads without preventing it from being unloaded.
 		 */
-		jclass classObject;
+		//jclass classObject;
 
 		/**
 		 * A copy of the class name.
