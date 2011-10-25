@@ -81,6 +81,16 @@ namespace traits
 			return false;
 		}
 
+		bool setJavaObject(jobject javaObject) const
+		{
+			if (this->isLocked() == false)
+			{
+				this->javaObject = javaObject;
+				return true;
+			}
+			return false;
+		}
+
 		/**
 		 * Return the reference truly owned by the class.
 		 *
@@ -92,7 +102,7 @@ namespace traits
 		}
 
 	private:
-		jobject javaObject;
+		mutable jobject javaObject;
 	};
 }
 }

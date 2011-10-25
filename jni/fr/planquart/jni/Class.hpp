@@ -74,12 +74,7 @@ namespace JNI
 		 */
 		void release(JNIEnv* env)
 		{
-			jobject object = traits::JavaObjectWrapper::getJavaObject();
-			if (object != 0)
-			{
-				env->DeleteWeakGlobalRef(object);
-				this->setJavaObject(0);
-			}
+			this->releaseObject(env);
 		}
 
 		/**
@@ -101,12 +96,12 @@ namespace JNI
 		 * @param env The JNI environment
 		 * @return A local ref to the Java Class object or 0
 		 */
-		jclass getClassObject(JNIEnv* env)
+		jclass getClassObject(JNIEnv* env) const
 		{
 			jobject object = this->getJavaObject(env);
 			if (object == 0)
 			{
-				this->release(env);
+				this->releaseObject(env);
 			}
 			return static_cast<jclass>(object);
 		}
@@ -195,12 +190,12 @@ namespace JNI
 			return this->getStaticField(env, signature);
 		}
 
-		virtual jobject getJavaObject(JNIEnv* env)
+		virtual jobject getJavaObject(JNIEnv* env) const
 		{
 			return this->getClassObject(env);
 		}
 
-		virtual jclass getJavaClass(JNIEnv* env)
+		virtual jclass getJavaClass(JNIEnv* env) const
 		{
 			return this->getClassObject(env);
 		}
@@ -211,6 +206,19 @@ namespace JNI
 		}
 
 	private:
+		/**
+		 * Release an object as long as it is not used anymore.
+		 */
+		void releaseObject(JNIEnv* env) const
+		{
+			jobject object = traits::JavaObjectWrapper::getJavaObject();
+			if (object != 0)
+			{
+				env->DeleteWeakGlobalRef(object);
+				traits::JavaObjectWrapper::setJavaObject(0);
+			}
+		}
+
 		/**
 		 * Release all instances.
 		 */

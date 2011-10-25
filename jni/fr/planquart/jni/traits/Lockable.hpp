@@ -35,7 +35,7 @@ namespace traits
 		 *
 		 * @return The lock status
 		 */
-		bool isLocked()
+		bool isLocked() const
 		{
 			return this->locked;
 		}

@@ -115,7 +115,7 @@ namespace traits
 
 	protected:
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature) = 0;
-		virtual jobject getJavaObject(JNIEnv* env) = 0;
+		virtual jobject getJavaObject(JNIEnv* env) const = 0;
 		virtual Class* getClass() = 0;
 
 		inline Object getObjectField(JNIEnv* env, Signature* signature);

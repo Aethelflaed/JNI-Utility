@@ -83,10 +83,6 @@ namespace JNI
 			return *this;
 		}
 
-		virtual jobject getJavaObject(JNIEnv* env)
-		{
-			return traits::JavaObjectWrapper::getJavaObject(env);
-		}
 		virtual jobject getJavaObject(JNIEnv* env) const
 		{
 			return traits::JavaObjectWrapper::getJavaObject(env);
