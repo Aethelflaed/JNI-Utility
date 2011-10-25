@@ -13,6 +13,7 @@
 #include "traits/Callable.hpp"
 #include "traits/StaticCallable.hpp"
 #include "traits/StaticFieldStructure.hpp"
+#include "traits/JavaObjectWrapper.hpp"
 
 namespace fr
 {

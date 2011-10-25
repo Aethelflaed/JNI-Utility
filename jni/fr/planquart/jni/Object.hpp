@@ -8,7 +8,7 @@
 #include "Signature.hpp"
 #include "traits/Callable.hpp"
 #include "traits/FieldStructure.hpp"
-#include "traits/JObjectWrapper.hpp"
+#include "traits/JavaObjectWrapper.hpp"
 
 namespace fr
 {
@@ -20,7 +20,7 @@ namespace JNI
 	 * This class is an abstract representation of a Java object.
 	 */
 	class Object :
-		public traits::JObjectWrapper,
+		public traits::JavaObjectWrapper,
 		public traits::Callable,
 		public traits::FieldStructure
 	{
@@ -85,11 +85,11 @@ namespace JNI
 
 		virtual jobject getJavaObject(JNIEnv* env)
 		{
-			return traits::JObjectWrapper::getJavaObject(env);
+			return traits::JavaObjectWrapper::getJavaObject(env);
 		}
 		virtual jobject getJavaObject(JNIEnv* env) const
 		{
-			return traits::JObjectWrapper::getJavaObject(env);
+			return traits::JavaObjectWrapper::getJavaObject(env);
 		}
 	protected:
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature)

@@ -1,5 +1,5 @@
-#ifndef FR_PLANQUART_JNI_TRAITS_JOBJECT_WRAPPER_HPP
-#define FR_PLANQUART_JNI_TRAITS_JOBJECT_WRAPPER_HPP
+#ifndef FR_PLANQUART_JNI_TRAITS_JAVAOBJECT_WRAPPER_HPP
+#define FR_PLANQUART_JNI_TRAITS_JAVAOBJECT_WRAPPER_HPP
 
 #include <jni.h>
 
@@ -13,15 +13,15 @@ namespace JNI
 {
 namespace traits
 {
-	class JObjectWrapper : public Lockable
+	class JavaObjectWrapper : public Lockable
 	{
 	public:
-		JObjectWrapper()
+		JavaObjectWrapper()
 			:javaObject{0}
 		{
 		}
 
-		virtual ~JObjectWrapper()
+		virtual ~JavaObjectWrapper()
 		{
 		}
 
@@ -99,5 +99,5 @@ namespace traits
 }
 }
 
-#endif /* FR_PLANQUART_JNI_TRAITS_JOBJECT_WRAPPER_HPP */
+#endif /* FR_PLANQUART_JNI_TRAITS_JAVAOBJECT_WRAPPER_HPP */
 

@@ -53,12 +53,12 @@ Object::~Object()
 		return;
 	}
 
-	JVM::getEnv()->DeleteLocalRef(traits::JObjectWrapper::getJavaObject());
+	JVM::getEnv()->DeleteLocalRef(traits::JavaObjectWrapper::getJavaObject());
 }
 
 bool Object::isValid()
 {
-	return traits::JObjectWrapper::isValid() &&
+	return traits::JavaObjectWrapper::isValid() &&
 		this->classObject != 0;
 }
 
