@@ -38,6 +38,11 @@ namespace JNI
 		static Signature* method_Class_getName_V;
 		static Signature* method_Object_toString_V;
 		static Signature* method_Object_hashCode_I;
+		static Signature* method_Object_notify;
+		static Signature* method_Object_notifyAll;
+		static Signature* method_Object_wait;
+		static Signature* method_Object_wait_L;
+		static Signature* method_Object_wait_LI;
 		static Signature* method_Activity_getWindowManager_V;
 		static Signature* method_WindowManager_getDefaultDisplay_V;
 		static Signature* method_Display_getHeight_V;

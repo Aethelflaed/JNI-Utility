@@ -52,7 +52,6 @@ namespace traits
 				env->IsSameObject(this->javaObject, 0) == JNI_FALSE;
 		}
 
-	protected:
 		/**
 		 * Get a new local reference to the java object.
 		 *
@@ -64,6 +63,7 @@ namespace traits
 			return env->NewLocalRef(this->javaObject);
 		}
 
+	protected:
 		/**
 		 * Set the reference of the java object to a new value.
 		 * This is only done if the object is not locked.

@@ -17,6 +17,7 @@ LOCAL_SRC_FILES += fr/planquart/jni/traits/Callable.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/traits/StaticCallable.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/traits/FieldStructure.cpp
 LOCAL_SRC_FILES += fr/planquart/jni/traits/StaticFieldStructure.cpp
+LOCAL_SRC_FILES += fr/planquart/jni/traits/Monitor.cpp
 
 include $(BUILD_SHARED_LIBRARY)
 
