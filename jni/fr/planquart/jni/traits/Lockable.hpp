@@ -22,7 +22,7 @@ namespace traits
 	{
 	public:
 		Lockable()
-			:locked{false}
+			:locked{false}, key{0}
 		{
 		}
 
@@ -41,17 +41,41 @@ namespace traits
 		}
 
 		/**
-		 * Set the lock status of the object
+		 * Lock the object with the given key
 		 *
-		 * @param locked The lock status
+		 * @param key The key used to lock the object. Reuse this key with
+		 *	unlock()
+		 * @return false if object is already locked, true otherwise
 		 */
-		void setLocked(bool locked)
+		bool lock(int key)
 		{
-			this->locked = locked;
+			if (this->locked)
+			{
+				return false;
+			}
+			this->locked = true;
+			this->key = key;
+		}
+
+		/**
+		 * Unlock the object using the given key
+		 *
+		 * @param key The key used to unlock the object.
+		 * @return false if key mismatch, true otherwise
+		 */
+		bool unlock(int key)
+		{
+			if (this->key != key && key != 0)
+			{
+				return false;
+			}
+			this->locked = false;
+			return true;
 		}
 
 	private:
 		bool locked;
+		int key;
 	};
 }
 }
