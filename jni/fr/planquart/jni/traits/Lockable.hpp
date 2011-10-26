@@ -47,7 +47,7 @@ namespace traits
 		 *	unlock()
 		 * @return false if object is already locked, true otherwise
 		 */
-		bool lock(int key)
+		bool lock(int key = 0)
 		{
 			if (this->locked)
 			{
@@ -63,9 +63,9 @@ namespace traits
 		 * @param key The key used to unlock the object.
 		 * @return false if key mismatch, true otherwise
 		 */
-		bool unlock(int key)
+		bool unlock(int key = 0)
 		{
-			if (this->key != key && key != 0)
+			if (this->key != key)
 			{
 				return false;
 			}
