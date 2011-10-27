@@ -9,6 +9,7 @@
 #include "traits/Callable.hpp"
 #include "traits/FieldStructure.hpp"
 #include "traits/JavaObjectWrapper.hpp"
+#include "traits/Monitor.hpp"
 
 namespace fr
 {
@@ -22,7 +23,8 @@ namespace JNI
 	class Object :
 		public traits::JavaObjectWrapper,
 		public traits::Callable,
-		public traits::FieldStructure
+		public traits::FieldStructure,
+		public traits::Monitor
 	{
 	public:
 		/**
@@ -88,6 +90,11 @@ namespace JNI
 			return traits::JavaObjectWrapper::getJavaObject(env);
 		}
 	protected:
+		virtual JavaObjectWrapper& getObjectWrapper()
+		{
+			return *this;
+		}
+
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature)
 		{
 			return this->classObject->getField(env, signature);

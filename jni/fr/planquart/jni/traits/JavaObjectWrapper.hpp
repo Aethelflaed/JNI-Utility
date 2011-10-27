@@ -5,6 +5,8 @@
 
 #include "Lockable.hpp"
 
+using ::fr::Planquart::JNI::Log;
+
 namespace fr
 {
 namespace Planquart
@@ -73,12 +75,7 @@ namespace traits
 		 */
 		virtual bool setJavaObject(jobject javaObject)
 		{
-			if (this->isLocked() == false)
-			{
-				this->javaObject = javaObject;
-				return true;
-			}
-			return false;
+			return ((const JavaObjectWrapper*)this)->setJavaObject(javaObject);
 		}
 
 		bool setJavaObject(jobject javaObject) const

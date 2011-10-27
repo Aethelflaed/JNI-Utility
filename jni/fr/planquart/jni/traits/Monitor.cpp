@@ -59,7 +59,7 @@ bool Monitor::synchronize(JNIEnv* env)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 	jobject javaObject = object.getJavaObject(env);
 
 	if (env->MonitorEnter(javaObject) != JNI_OK)
@@ -80,7 +80,7 @@ bool Monitor::desynchronize(JNIEnv* env)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 	jobject javaObject = object.getJavaObject(env);
 
 	if (env->MonitorExit(javaObject) != JNI_OK)
@@ -101,7 +101,7 @@ bool Monitor::notify(JNIEnv* env)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 
 	private_namespace::MonitorCallable callable;
 	callable.classObject = ::fr::Planquart::JNI::Class::getClass(
@@ -126,7 +126,7 @@ bool Monitor::notifyAll(JNIEnv* env)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 
 	private_namespace::MonitorCallable callable;
 	callable.classObject = ::fr::Planquart::JNI::Class::getClass(
@@ -151,7 +151,7 @@ bool Monitor::wait(JNIEnv* env)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 
 	private_namespace::MonitorCallable callable;
 	callable.classObject = ::fr::Planquart::JNI::Class::getClass(
@@ -176,7 +176,7 @@ bool Monitor::wait(JNIEnv* env, jlong millis)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 
 	private_namespace::MonitorCallable callable;
 	callable.classObject = ::fr::Planquart::JNI::Class::getClass(
@@ -201,7 +201,7 @@ bool Monitor::wait(JNIEnv* env, jlong millis, jint nanos)
 		return true;
 	}
 
-	JavaObjectWrapper& object = this->getObjectWrapper(env);
+	JavaObjectWrapper& object = this->getObjectWrapper();
 
 	private_namespace::MonitorCallable callable;
 	callable.classObject = ::fr::Planquart::JNI::Class::getClass(

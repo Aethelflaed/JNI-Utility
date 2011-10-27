@@ -164,7 +164,7 @@ namespace traits
 		bool wait(JNIEnv* env, jlong millis, jint nanos);
 
 	protected:
-		virtual JavaObjectWrapper& getObjectWrapper(JNIEnv* env) = 0;
+		virtual JavaObjectWrapper& getObjectWrapper() = 0;
 
 	private:
 		bool synchronized;
