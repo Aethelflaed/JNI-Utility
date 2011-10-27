@@ -57,9 +57,10 @@ std::string String::getUTFString(JNIEnv* env)
 
 char* String::getCUTFString(JNIEnv* env)
 {
-	jstring javaString = static_cast<jstring>(this->getJavaObject(env));
+	jstring javaString = this->getJavaObject(env);
 
 	jint length = env->GetStringLength(javaString);
+
 	char* string = (char*) malloc(sizeof(char) * length);
 	env->GetStringUTFRegion(javaString, 0, length, string);
 

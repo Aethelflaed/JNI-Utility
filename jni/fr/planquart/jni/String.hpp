@@ -59,9 +59,9 @@ namespace JNI
 		 */
 		char* getCUTFString(JNIEnv* env);
 
-		virtual jstring getJavaObject(JNIEnv* env)
+		virtual jstring getJavaObject(JNIEnv* env) const
 		{
-			return static_cast<jstring>(Object::getJavaObject(env));
+			return static_cast<jstring>(this->Object::getJavaObject(env));
 		}
 	};
 }

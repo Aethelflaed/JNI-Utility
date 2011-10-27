@@ -25,5 +25,6 @@ Method::Method(JNIEnv* env, Class* classObject, Signature* signature, bool isSta
 				signature->getName(),
 				signature->getType());
 	}
+	env->DeleteLocalRef(clazz);
 }
 

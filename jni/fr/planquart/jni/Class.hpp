@@ -98,7 +98,7 @@ namespace JNI
 		 */
 		jclass getClassObject(JNIEnv* env) const
 		{
-			jobject object = this->getJavaObject(env);
+			jobject object = this->traits::JavaObjectWrapper::getJavaObject(env);
 			if (object == 0)
 			{
 				this->releaseObject(env);
@@ -244,13 +244,6 @@ namespace JNI
 		Class(JNIEnv* env, Name* className);
 
 		~Class();
-
-		/**
-		 * The Java Class object associated with this abstract representation
-		 * This object is a weak global reference to keep the same reference
-		 * between threads without preventing it from being unloaded.
-		 */
-		//jclass classObject;
 
 		/**
 		 * A copy of the class name.

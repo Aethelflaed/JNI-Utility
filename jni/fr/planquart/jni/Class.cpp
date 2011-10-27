@@ -35,7 +35,6 @@ Class::Class(JNIEnv* env, Name* className)
 	jclass classObject = env->FindClass(className->getName());
 	if (classObject == 0)
 	{
-		/* ClassNotFoundException or OutOfMemoryException */
 		return;
 	}
 	this->setJavaObject(env->NewWeakGlobalRef(classObject));

@@ -11,10 +11,12 @@ using namespace fr::Planquart::JNI::traits;
 inline ::fr::Planquart::JNI::Object Callable::callObjectMethodV(JNIEnv* env, Signature* signature, va_list arguments_list)
 {
 	Method* method = this->getMethodDescriptor(env, signature);
+
 	if (method != 0)
 	{
 		jobject object = this->getJavaObject(env);
 		jobject value;
+
 		if (object != 0)
 		{
 			value = env->CallObjectMethodV(object, method->getMethodID(), arguments_list);
