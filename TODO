@@ -1,0 +1,7 @@
+TODO
+
+#1	Add an attribute to fr/Planquart/JNI/Object to control the reference
+	passed using Object(Class*, jobject). This causes the local reference
+	`this' passed to native methods to be freed twice. The application
+	will thus produce a warning.
+
