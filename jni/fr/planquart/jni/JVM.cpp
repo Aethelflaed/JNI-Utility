@@ -59,6 +59,7 @@ void JVM::initialize()
 
 	Object object = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
 	object.synchronize(env);
+	object.notify(env);
 
 	String* stringObject = static_cast<String*>(&object);
 

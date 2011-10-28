@@ -4,6 +4,8 @@
 #include "../Class.hpp"
 #include "../Method.hpp"
 
+using ::fr::Planquart::JNI::Log;
+
 namespace fr
 {
 namespace Planquart
@@ -69,6 +71,7 @@ bool Monitor::synchronize(JNIEnv* env)
 	}
 	env->DeleteLocalRef(javaObject);
 
+	object.lock((int)this);
 	this->synchronized = true;
 	return true;
 }
@@ -90,6 +93,7 @@ bool Monitor::desynchronize(JNIEnv* env)
 	}
 	env->DeleteLocalRef(javaObject);
 
+	object.unlock((int)this);
 	this->synchronized = false;
 	return true;
 }

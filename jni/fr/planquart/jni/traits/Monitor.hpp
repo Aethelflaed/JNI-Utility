@@ -47,7 +47,7 @@ namespace traits
 		{
 			if (this->synchronized)
 			{
-				Log::fatal("Monitor", "Monitor destructor called on synchronized object!");
+				::fr::Planquart::JNI::Log::fatal("Monitor", "Monitor destructor called on synchronized object!");
 				this->desynchronize(
 					::fr::Planquart::JNI::JVM::getEnv());
 			}
