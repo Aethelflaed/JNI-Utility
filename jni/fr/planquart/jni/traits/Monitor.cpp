@@ -29,7 +29,7 @@ namespace private_namespace
 
 		virtual Method* getMethodDescriptor(JNIEnv* env, Signature* signature)
 		{
-			if (this->classObject = 0)
+			if (this->classObject == 0)
 			{
 				return 0;
 			}
@@ -39,11 +39,6 @@ namespace private_namespace
 		virtual jobject getJavaObject(JNIEnv* env) const
 		{
 			return env->NewLocalRef(this->javaObject);;
-		}
-
-		virtual Class* getClass()
-		{
-			return this->classObject;
 		}
 	};
 }
@@ -113,6 +108,7 @@ bool Monitor::notify(JNIEnv* env)
 	callable.javaObject = object.getJavaObject(env);
 
 	callable.callMethod<void>(env, ::fr::Planquart::JNI::JVM::method_Object_notify);
+
 	if (env->ExceptionCheck() != JNI_OK)
 	{
 		env->DeleteLocalRef(callable.javaObject);

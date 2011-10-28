@@ -58,14 +58,10 @@ void JVM::initialize()
 	Log::debug("JVM", "jclass value = %p", classObject->traits::JavaObjectWrapper::getJavaObject());
 
 	Object object = classObject->callMethod<Object>(env, JVM::method_Class_getName_V);
-	object.synchronize(env);
-	object.notify(env);
 
 	String* stringObject = static_cast<String*>(&object);
 
 	jint hash = classObject->callMethod<jint>(env, JVM::method_Object_hashCode_I);
-
-	object.desynchronize(env);
 
 	Log::debug("JVM", "jclass hash : %d", hash);
 	Log::debug("JVM", "jclass name : %s", stringObject->getUTFString(env).c_str());

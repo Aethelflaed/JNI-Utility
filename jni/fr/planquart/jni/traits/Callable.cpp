@@ -5,6 +5,9 @@
 #include "../Signature.hpp"
 #include "../Class.hpp"
 #include "../JVM.hpp"
+#include "../Log.hpp"
+
+using ::fr::Planquart::JNI::Log;
 
 using namespace fr::Planquart::JNI::traits;
 
