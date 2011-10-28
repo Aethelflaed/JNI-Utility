@@ -200,11 +200,6 @@ namespace JNI
 			return this->getClassObject(env);
 		}
 
-		virtual Class* getClass()
-		{
-			return this;
-		}
-
 	private:
 		/**
 		 * Release an object as long as it is not used anymore.

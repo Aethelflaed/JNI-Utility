@@ -5,8 +5,6 @@
 
 #include "Lockable.hpp"
 
-using ::fr::Planquart::JNI::Log;
-
 namespace fr
 {
 namespace Planquart

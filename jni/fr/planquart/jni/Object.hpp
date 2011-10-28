@@ -105,11 +105,6 @@ namespace JNI
 			return this->classObject->getMethod(env, signature);
 		}
 
-		virtual Class* getClass()
-		{
-			return this->classObject;
-		}
-
 		Class* classObject;
 	};
 }

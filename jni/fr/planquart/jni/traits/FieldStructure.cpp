@@ -23,7 +23,7 @@ inline ::fr::Planquart::JNI::Object FieldStructure::getObjectField(JNIEnv* env, 
 			return Object();
 		}
 		env->DeleteLocalRef(object);
-		return Object(this->getClass(), value);
+		return Object(Class::getClass(JVM::class_Object, env), value);
 	}
 	return Object();
 }

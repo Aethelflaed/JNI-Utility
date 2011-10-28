@@ -10,7 +10,6 @@ namespace Planquart
 {
 namespace JNI
 {
-	class Class;
 	class Method;
 	class Object;
 	class Signature;
@@ -81,7 +80,6 @@ namespace traits
 	protected:
 		virtual Method* getStaticMethodDescriptor(JNIEnv* env, Signature* signature) = 0;
 		virtual jclass getJavaClass(JNIEnv* env) const = 0;
-		virtual Class* getClass() = 0;
 
 		inline Object callStaticObjectMethodV(JNIEnv* env, Signature* signature, va_list arguments_list);
 

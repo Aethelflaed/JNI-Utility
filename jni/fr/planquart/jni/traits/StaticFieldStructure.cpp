@@ -23,7 +23,7 @@ inline ::fr::Planquart::JNI::Object StaticFieldStructure::getStaticObjectField(J
 			return Object();
 		}
 		env->DeleteLocalRef(object);
-		return Object(this->getClass(), value);
+		return Object(Class::getClass(JVM::class_Object, env), value);
 	}
 	return Object();
 }

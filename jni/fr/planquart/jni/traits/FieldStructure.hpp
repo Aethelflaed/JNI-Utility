@@ -9,7 +9,6 @@ namespace Planquart
 {
 namespace JNI
 {
-	class Class;
 	class Field;
 	class Object;
 	class Signature;
@@ -116,7 +115,6 @@ namespace traits
 	protected:
 		virtual Field* getFieldDescriptor(JNIEnv* env, Signature* signature) = 0;
 		virtual jobject getJavaObject(JNIEnv* env) const = 0;
-		virtual Class* getClass() = 0;
 
 		inline Object getObjectField(JNIEnv* env, Signature* signature);
 		inline bool setObjectField(JNIEnv* env, Signature* signature, Object& value);
